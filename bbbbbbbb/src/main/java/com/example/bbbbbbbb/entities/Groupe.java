@@ -3,26 +3,22 @@ package com.example.bbbbbbbb.entities;
 import jakarta.persistence.*;
 
 @Entity
-//@Table(name="ROLE")
-public class Role {
+public class Groupe {
+
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
     protected String nom;
+    public Groupe() {
+    }
 
-    public Role(long id, String nom) {
+    public Groupe(long id, String nom) {
         this.id = id;
         this.nom = nom;
     }
 
-    public Role() {
-
-    }
-
     public long getId() {
-        return this.id;
+        return id;
     }
-
 
     public void setId(long id) {
         this.id = id;
@@ -35,4 +31,5 @@ public class Role {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
 }
