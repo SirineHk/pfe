@@ -57,9 +57,81 @@ public class GroupService {
         long num = 1;
         try (Connection con = getConnection();
              Statement st = con.createStatement()) {
-            int rowsUpdated = st.executeUpdate("UPDATE PFE.GROUPE SET NOM = '"+newN+"' WHERE ID ='"+num+ "'");
+            int rowsUpdated = st.executeUpdate("UPDATE PFE.GROUPE SET NOM = '" + newN + "' WHERE ID ='" + num + "'");
             return rowsUpdated > 0 ? "Modification réussie" : "Aucune modification effectuée";
         }
     }
+
+    private void inser(int sup, int grp) {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("INSERT INTO PFE.GRPUSER VALUES ('" + sup + "','"+grp +"')")) {
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void supp(int grp) {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement()) {
+            int rowsAffected = st.executeUpdate("DELETE FROM PFE.GRPUSER WHERE IDGRP='" + grp+"'");
+            System.out.println(rowsAffected + " row(s) deleted.");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void delete(int sup) {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement()) {
+            int rowsAffected = st.executeUpdate("DELETE FROM PFE.GRPUSER WHERE IDUSER='" + sup+"'");
+            System.out.println(rowsAffected + " row(s) deleted.");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public String addSup() throws IOException, SQLException {
+        int sup = 21;
+        int grp = 2;
+        try (Connection con = getConnection();
+             Statement st = con.createStatement()) {
+            // Delete existing supervisor with ID 'sup'
+            delete(sup);
+
+            // Delete existing supervisor from group 'grp'
+            supp(grp);
+
+            // Insert the new supervisor into group 'grp'
+            inser(sup, grp);
+
+            return "success";
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public String addComm() throws IOException, SQLException {
+        List<Integer> l= List.of(23,2);
+        int grp = 1;
+        try (Connection con = getConnection();
+             Statement st = con.createStatement()) {
+            for (int i :l){
+                // Delete existing supervisor with ID 'sup'
+                delete(i);
+                // Insert the new supervisor into group 'grp'
+                inser(i, grp);
+            }
+
+            return "success";
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 }
 

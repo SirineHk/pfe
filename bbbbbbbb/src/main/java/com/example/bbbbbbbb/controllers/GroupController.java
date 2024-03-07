@@ -38,4 +38,14 @@ public class GroupController {
     public String modif() throws SQLException, ClassNotFoundException {
         return groupService.modif();
     }
+
+    @GetMapping("/sup")
+    public String addSup() throws SQLException,IOException {
+        return groupService.addSup();
+    }
+
+    @GetMapping("/comm")
+    public String addCom() throws SQLException,IOException {
+        return groupService.addComm();
+    }
 }
