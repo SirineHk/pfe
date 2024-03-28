@@ -25,4 +25,14 @@ public class FicheController {
     String update() throws SQLException, ParseException, ClassNotFoundException {
         return ficheService.update();
     }
+
+    @GetMapping("/create")
+    String create() throws SQLException, ParseException, ClassNotFoundException {
+        return ficheService.create();
+    }
+
+    @GetMapping("/del")
+    String delet() throws SQLException, ParseException, ClassNotFoundException {
+        return ficheService.delete();
+    }
 }

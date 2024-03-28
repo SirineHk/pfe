@@ -18,6 +18,38 @@ public class FicheService {
         return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "Sirine12");
     }
 
+    public String create() throws SQLException, ParseException, ClassNotFoundException {
+        String newN = "nom";
+        String newDStr = "2000-02-15"; // Nouvelle date au format "yyyy-MM-dd"
+        String newAdr= "adresse";
+        String newEma = "email";
+        String newDesc = "description";
+        String newNum = "12345687";
+
+        if (newNum.length() != 8) {
+            return "num tel invalide";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newD = sdf.parse(newDStr);
+        java.sql.Date newSqlDate = new java.sql.Date(newD.getTime());
+
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement("INSERT INTO PFE.FICHE (NOM, DN, ADRESSE, EMAIL, TEL, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?)")) {
+
+            st.setString(1, newN);
+            st.setDate(2, newSqlDate);
+            st.setString(3, newAdr);
+            st.setString(4, newEma);
+            st.setString(5, newNum);
+            st.setString(6, newDesc);
+
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0 ? "Création réussie" : "Aucune création effectuée";
+        }
+    }
+
+
     public String update() throws ClassNotFoundException, SQLException, ParseException {
         String newN = "nom";
         String newDStr = "2000-02-15"; // Nouvelle date au format "yyyy-MM-dd"
@@ -49,6 +81,21 @@ public class FicheService {
 
             int rowsUpdated = st.executeUpdate();
             return rowsUpdated > 0 ? "Modification réussie" : "Aucune modification effectuée";
+        }
+    }
+
+
+
+    public String delete() throws SQLException, ClassNotFoundException {
+        long id = 1; // ID de la fiche à supprimer
+
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement("DELETE FROM PFE.FICHE WHERE ID = ?")) {
+
+            st.setLong(1, id);
+
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0 ? "Suppression réussie" : "Aucune suppression effectuée";
         }
     }
 }
